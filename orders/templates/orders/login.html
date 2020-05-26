@@ -1,0 +1,22 @@
+{% extends "orders/template.html" %}
+
+{% block title %}
+    Login Page
+{% endblock %}
+
+{% block body %}
+    <h1>Login Page</h1>
+
+    {% if message %}
+        {{ message }}
+    {% endif %}
+
+    <form action="{% url 'login' %}" method="post">
+        {% csrf_token %}
+        <input type="text" name="username">
+        <input type="password" name="password">
+        <input type="submit" value="Login">
+    </form>
+
+    <p>Don't have an account? <a href="{% url 'sign_up' %}">Sign Up!</a></p>
+{% endblock %}

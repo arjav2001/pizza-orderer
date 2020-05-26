@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 class ItemType(models.Model):
@@ -22,8 +23,8 @@ class MenuItem(models.Model):
 
     def __str__(self):
         if self.size.size == "NA":
-            return f"{self.item_type}: {self.name} for ${self.price}"
-        return f"{self.item_type}: {self.size} {self.name} for ${self.price}"
+            return f"{self.name} for ${self.price}"
+        return f"{self.size} {self.name} for ${self.price}"
 
 class Topping(models.Model):
     name = models.CharField(max_length=64)
@@ -35,18 +36,18 @@ class Topping(models.Model):
         return f"{self.name} for ${self.price}"
 
 class OrderItem(models.Model):
-    item = models.ForeignKey(MenuItem, on_delete=models.CASCADE)
+    item = models.ForeignKey(MenuItem, on_delete=models.CASCADE, default=None)
     toppings = models.ManyToManyField(Topping, blank=True)
-    price = models.IntegerField()
+    price = models.DecimalField(max_digits=5, decimal_places=2)
 
     def __str__(self):
-        if self.toppings is None:
-            return f"{self.item}"
-        return f"{self.item} with {self.toppings} for ${self.price}"
+        return f"{self.item} for ${self.price}"
 
 class Order(models.Model):
-    items = models.ManyToManyField(OrderItem, blank=False)
-    price = models.IntegerField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
+    items = models.ManyToManyField(OrderItem, blank=True, default=None)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    ordered = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.items}, Total Price:${self.price}"
+        return f"Total Price:${self.price}"

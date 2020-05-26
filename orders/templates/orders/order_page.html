@@ -1,0 +1,30 @@
+{% extends "orders/template.html" %}
+
+{% block title %}
+    Order Page
+{% endblock %}
+
+{% block body %}
+    <h1>What category do you want to order from?</h1>
+    <select>
+        <option value="" selected disabled hidden>Choose here</option>
+        {% for itemType in itemTypes %}
+            <option value="{{itemType}}"> {{ itemType }} </option>
+        {% endfor %}
+    </select>
+   <h2>Click item to add it to your shopping cart.</h2>
+    {% for item in items %}
+        <a href="{% url 'item_order' item.id %}" class="initially_hidden" data-itemType="{{item.item_type}}" data-value={{item}}>{{item}}</a>
+        <!-- {% if item.num_toppings > 0 %}
+            <select multiple class="initially_hidden" id={{item}}>
+                {% for topping in toppings %}
+                    {% if topping.price > 0 and item.item_type.name == "Subs" %}
+                        <option value=""> {{topping}} </option>
+                    {% elif topping.price == 0 and item.item_type.name != "Subs" %}
+                        <option value=""> {{topping}} </option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        {% endif %} -->
+    {% endfor %}
+{% endblock %}

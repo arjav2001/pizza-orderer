@@ -1,0 +1,17 @@
+{% extends "orders/template.html" %}
+
+{% block title %}
+    Sign Up Page
+{% endblock %}
+
+{% block body %}
+    <form action="{% url 'sign_up_verification' %}" method="post">
+        {% csrf_token %}
+        <input type="text" name="first_name" placeholder="First Name" class="necessary">
+        <input type="text" name="last_name" placeholder="Last Name" class="necessary">
+        <input type="email" name="email" placeholder="Email" class="necessary">
+        <input type="text" name="username" placeholder="Username" class="necessary">
+        <input type="password" name="password" placeholder="Password" class="necessary">
+        <input type="submit" value="Sign Up">
+    </form>
+{% endblock %}

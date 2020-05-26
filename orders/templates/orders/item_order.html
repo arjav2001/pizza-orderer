@@ -1,0 +1,56 @@
+{% extends "orders/template.html" %}
+
+{% block title %}
+    {{item.name}} Order Page
+{% endblock %}
+
+{% block body %}
+    <form action="{% url 'enter_shopping_cart' %}" method="post">
+    <span data-numToppings="{{item.num_toppings}}"></span>
+    <h1>Select Toppings</h1>
+    <p>{{item.item_type}}: {{item}}</p>
+    {% if item.num_toppings == 0%}
+        <p>No Toppings To Select</p>
+        <select class="initially_hidden" id="selected_toppings" name="selected_toppings">
+            <option selected value=""></option>
+        </select>
+    {% else %}
+        {% if item.item_type.name == "Subs" %}
+            <p>Would you like toppings with this order?</p>
+            <button id="Yes">Yes</button>
+            <button id="No">No</button>
+
+            <select class="initially_hidden" id="selected_toppings" name="selected_toppings" multiple="multiple">
+                {% if item.num_toppings > 1 %}
+                    {% for topping in toppings %}
+                        {% if topping.price > 0 %}
+                            <option value="{{topping.id}}">{{topping}}</option>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    {% for topping in toppings %}
+                        {% if topping.name == "Extra Cheese" %}
+                            <option value="{{topping.id}}">{{topping}}</option>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </select>
+        {% else %}
+            <p>Choose {{item.num_toppings}} topping(s).</p>
+            <select name="selected_toppings" id="selected_toppings" multiple="multiple">
+                {% for topping in toppings %}
+                    {% if topping.price == 0 %}
+                        <option value="{{topping.id}}">{{topping}}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        {% endif %}
+    {% endif %}
+    <p id="error"></p>
+        {% csrf_token %}
+        <input type="text" name="to_change" value="" class="initially_hidden" id="to_change">
+        <input type="text" name="item" value={{item.id}} class="initially_hidden">
+        <input type="submit" id="real_submit" class="initially_hidden">
+    </form>
+    <input type="submit" value="Place Order" id="topping_checker">
+{% endblock %}

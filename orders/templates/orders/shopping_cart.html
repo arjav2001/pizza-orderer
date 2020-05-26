@@ -1,0 +1,17 @@
+{% extends "orders/template.html" %}
+
+{% block title %}
+    Shopping Cart
+{% endblock %}
+
+{% block body %}
+    <p>{{order}} {{toppings}}</p>
+    {% for item in order.items.all %}
+        <li> {{ item }} </li>
+        <ul>
+            {% for topping in item.toppings.all %}
+                <li> {{topping}} </li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+{% endblock %}

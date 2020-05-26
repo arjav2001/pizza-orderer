@@ -1,0 +1,29 @@
+{% extends "orders/template.html" %}
+
+{% block title%}
+    Homepage
+{% endblock %}
+
+{% block body %}
+    <h1>Welcome, {{ user.first_name }}</h1>
+    <ul>
+        <li>Currently logged in as: {{ user.username }}</li>
+        <li><a href="{% url 'logout' %}">Logout</a></li>
+    </ul>
+    <h2>Here are all the items in the menu:</h2>
+    <ul>
+        {% for itemType in itemTypes %}
+            <li>
+                <p>{{ itemType }} &darr; </p>
+                <ul id="items" class="initially_hidden">
+                    {% for item in items %}
+                        {% if item.item_type == itemType %}
+                            <li> {{ item }} </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'order_page' %}">Place an order.</a>
+{% endblock %}

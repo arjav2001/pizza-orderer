@@ -1,0 +1,10 @@
+{% block title %}
+    Homepage
+{% endblock %}
+
+{% block body %}
+    <h1>Welcome, {{ user.first_name }}</h1>
+    <ul>
+        <li>Currently logged in as: {{ user.username }}</li>
+    </ul>
+{% endblock %}
